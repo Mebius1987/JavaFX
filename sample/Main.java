@@ -302,7 +302,7 @@ public class Main extends Application {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Sorry!");
                 alert.setHeaderText("Look, an Information Dialog");
-                alert.setContentText("поражение - закончилось здоровье");
+                alert.setContentText("Поражение - закончилось здоровье");
 
                 alert.showAndWait();
 

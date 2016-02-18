@@ -201,7 +201,7 @@ public class Main extends Application {
         }
 
         stage.show();
-        stage.setTitle("Medals: " + medal + " / " + totalMedal);
+        stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health + " " + energy);
     }
 
     public void clearCell(int x, int y) {
@@ -275,7 +275,19 @@ public class Main extends Application {
             } else {
                 wasAtPill = false;
             }
+            if (smileX & smileY > smileX + 1 & smileY + 1) {
+                energy--;
+                if (energy <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sorry!");
+                    alert.setHeaderText("Look, an Information Dialog");
+                    alert.setContentText("Поражение – закончилась энергия");
 
+                    alert.showAndWait();
+
+                    System.exit(0);
+                }
+            }
             setSmile(smileX, smileY);
 
             if (smileX == exitX && smileY == exitY) {
@@ -298,7 +310,8 @@ public class Main extends Application {
 
                 System.exit(0);
             }
-            if (health == 0) {
+
+            if (health <= 0) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Sorry!");
                 alert.setHeaderText("Look, an Information Dialog");
@@ -308,7 +321,7 @@ public class Main extends Application {
 
                 System.exit(0);
             }
-            stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health);
+            stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health + " Energy " + energy);
 
         });
     }

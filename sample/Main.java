@@ -75,6 +75,8 @@ public class Main extends Application {
 
     int medal = 0;
     int totalMedal = 0;
+    int enemyDie = 0;
+    int totalEnemy=0;
 
     int health = 100;
     int coffeecost = 25;
@@ -84,6 +86,7 @@ public class Main extends Application {
     int kickCost = 10;
     boolean wasAtPill = false;
     boolean wasAtCoffe = false;
+
     public void options(Stage primaryStage) {
         ////////////////////////////////////////////////////////////////////////
         /// настройки окна
@@ -172,6 +175,9 @@ public class Main extends Application {
                 if (maze[y][x] == GameObject.CASH) {
                     totalMedal++;
                 }
+                if (maze[y][x] == GameObject.ENEMY) {
+                    totalEnemy++;
+                }
             }
         }
 
@@ -208,7 +214,7 @@ public class Main extends Application {
         }
 
         stage.show();
-        stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health + " " + energy);
+        stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health + " Energy " + energy + "Enemy: " + enemyDie + " / " + totalEnemy);
     }
 
     public void clearCell(int x, int y) {
@@ -235,7 +241,7 @@ public class Main extends Application {
         } else {
             maze[y][x] = GameObject.COFFEE;
             images[y][x] = new ImageView(coffee);
-            if (step <= 0) {
+            if (step > 0) {
                 maze[y][x] = GameObject.HALL; // делаем пустую ячейку по указанной позиции
                 images[y][x] = new ImageView(hall);
 
@@ -316,7 +322,7 @@ public class Main extends Application {
             } else if (t.getCode() == KeyCode.SHIFT) {//дерется
                 if (energy > kickCost) {
                     energy -= kickCost;
-                    int radius = 1;
+                    int radius = 2;
                     for (int y = smileY - radius; y < smileY + radius; y++) {
                         for (int x = smileX - radius; x < smileX + radius; x++) {
                             if (y >= 0 && y < height && x >= 0 && x < width) {
@@ -332,11 +338,15 @@ public class Main extends Application {
             if (maze[smileY][smileX] == GameObject.CASH) {
                 medal++;
             }
+            if (maze[smileY][smileX] == GameObject.ENEMY) {
+                enemyDie++;
+            }
             if (maze[smileY][smileX] == GameObject.COFFEE) {
                 if (step <= 0) {
                     energy += coffeecost;
                 }
             }
+            wasAtCoffe = (step > 0) ? true : false;
             if (maze[smileY][smileX] == GameObject.ENEMY) {// ВРАГИ
                 health -= 20;
             }
@@ -375,6 +385,16 @@ public class Main extends Application {
 
                 System.exit(0);
             }
+            if (enemyDie == totalEnemy) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Congratulations!");
+                alert.setHeaderText("Look, an Information Dialog");
+                alert.setContentText("победа - враги уничтожены!");
+
+                alert.showAndWait();
+
+                System.exit(0);
+            }
 
             if (health <= 0) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -386,7 +406,7 @@ public class Main extends Application {
 
                 System.exit(0);
             }
-            stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health + " Energy " + energy);
+            stage.setTitle("Medals: " + medal + " / " + totalMedal + " Health " + health + " Energy " + energy + "Enemy: " + enemyDie + " / " + totalEnemy);
 
         });
     }

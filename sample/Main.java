@@ -337,6 +337,10 @@ public class Main extends Application {
                                 if (maze[y][x] == GameObject.ENEMY) {
                                     clearCell(x, y);
                                     enemyDie++;
+                                    Media musicFile = new Media("file:///C:/Java/IDEA/labirint/src/Pinok.mp3");
+                                    mediaplayer = new MediaPlayer(musicFile);
+                                    mediaplayer.setAutoPlay(true);
+                                    mediaplayer.setVolume(0.1);
                                 }
                             }
                         }

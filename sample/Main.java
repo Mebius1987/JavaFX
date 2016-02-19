@@ -328,6 +328,7 @@ public class Main extends Application {
                             if (y >= 0 && y < height && x >= 0 && x < width) {
                                 if (maze[y][x] == GameObject.ENEMY) {
                                     clearCell(x, y);
+                                    enemyDie++;
                                 }
                             }
                         }

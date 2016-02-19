@@ -42,7 +42,7 @@ public class Main extends Application {
 
     enum GameObject {
 
-        HALL, WALL, CHAR, CASH, ENEMY, PILL // BOMB, ENEMY2, BOSS ...
+        HALL, WALL, CHAR, CASH, ENEMY, PILL, COFFEE // BOMB, ENEMY2, BOSS ...
     }
 
     GameObject[][] maze = new GameObject[height][width];
@@ -57,6 +57,7 @@ public class Main extends Application {
     Image cash = new Image("/img/cash2.png");
     Image enemy = new Image("/img/enemy.png");
     Image pill = new Image("/img/pill.png");
+    Image coffee = new Image("/img/coffee.png");
 
     GridPane layout; // менеджер компоновки. по сути, это панель, на которую
     // определённым образом выкладываются различные элементы управления
@@ -76,7 +77,8 @@ public class Main extends Application {
     int totalMedal = 0;
 
     int health = 100;
-    //int step = 0;// сколько прощел от кофе
+    int coffeecost = 25;
+    int step = 0;// сколько прощел от кофе
 
     int energy = 500;
     int kickCost = 10;
@@ -131,6 +133,9 @@ public class Main extends Application {
                 // в 1 случае из 250 - кладём денежку
                 if (r.nextInt(250) == 0) {
                     maze[y][x] = GameObject.CASH;
+                }
+                if (r.nextInt(150) == 0) {//варим кофе
+                    maze[y][x] = GameObject.COFFEE;
                 }
                 // в 1 случае из 250 - кладём таблетку
                 if (r.nextInt(250) == 0) {
@@ -189,6 +194,8 @@ public class Main extends Application {
                     current = cash;
                 } else if (maze[y][x] == GameObject.PILL) {
                     current = pill;
+                } else if (maze[y][x] == GameObject.COFFEE) {
+                    current = coffee;
                 } else/* if (maze[y][x] == GameObject.ENEMY)*/ {
                     current = enemy;
                 }
@@ -216,6 +223,9 @@ public class Main extends Application {
             if (health < 100) {
                 maze[y][x] = GameObject.HALL; // делаем пустую ячейку по указанной позиции
                 images[y][x] = new ImageView(hall);
+
+                    step = 10;
+
             }
         }
         layout.add(images[y][x], x, y);
@@ -235,12 +245,56 @@ public class Main extends Application {
 
             if (t.getCode() == KeyCode.RIGHT && maze[smileY][smileX + 1] != GameObject.WALL) {
                 smileX++;
+                energy--;
+                if (energy <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sorry!");
+                    alert.setHeaderText("Look, an Information Dialog");
+                    alert.setContentText("Поражение – закончилась энергия");
+
+                    alert.showAndWait();
+
+                    System.exit(0);
+                }
             } else if (t.getCode() == KeyCode.LEFT && smileX > 0 && maze[smileY][smileX - 1] != GameObject.WALL) {
                 smileX--;
+                energy--;
+                if (energy <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sorry!");
+                    alert.setHeaderText("Look, an Information Dialog");
+                    alert.setContentText("Поражение – закончилась энергия");
+
+                    alert.showAndWait();
+
+                    System.exit(0);
+                }
             } else if (t.getCode() == KeyCode.UP && smileY > 0 && maze[smileY - 1][smileX] != GameObject.WALL) {
                 smileY--;
+                energy--;
+                if (energy <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sorry!");
+                    alert.setHeaderText("Look, an Information Dialog");
+                    alert.setContentText("Поражение – закончилась энергия");
+
+                    alert.showAndWait();
+
+                    System.exit(0);
+                }
             } else if (t.getCode() == KeyCode.DOWN && smileY < height - 1 && maze[smileY + 1][smileX] != GameObject.WALL) {
                 smileY++;
+                energy--;
+                if (energy <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Sorry!");
+                    alert.setHeaderText("Look, an Information Dialog");
+                    alert.setContentText("Поражение – закончилась энергия");
+
+                    alert.showAndWait();
+
+                    System.exit(0);
+                }
             } else if (t.getCode() == KeyCode.SHIFT) {//дерется
                 if (energy > kickCost) {
                     energy -= kickCost;
@@ -260,6 +314,11 @@ public class Main extends Application {
             if (maze[smileY][smileX] == GameObject.CASH) {
                 medal++;
             }
+            if (maze[smileY][smileX] == GameObject.COFFEE) {
+                if (step == 0) {
+                    energy += coffeecost;
+                }
+            }
             if (maze[smileY][smileX] == GameObject.ENEMY) {// ВРАГИ
                 health -= 20;
             }
@@ -275,19 +334,7 @@ public class Main extends Application {
             } else {
                 wasAtPill = false;
             }
-            if (smileX & smileY > smileX + 1 & smileY + 1) {
-                energy--;
-                if (energy <= 0) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Sorry!");
-                    alert.setHeaderText("Look, an Information Dialog");
-                    alert.setContentText("Поражение – закончилась энергия");
 
-                    alert.showAndWait();
-
-                    System.exit(0);
-                }
-            }
             setSmile(smileX, smileY);
 
             if (smileX == exitX && smileY == exitY) {

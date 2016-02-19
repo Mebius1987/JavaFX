@@ -83,7 +83,7 @@ public class Main extends Application {
     int energy = 500;
     int kickCost = 10;
     boolean wasAtPill = false;
-
+    boolean wasAtCoffe = false;
     public void options(Stage primaryStage) {
         ////////////////////////////////////////////////////////////////////////
         /// настройки окна
@@ -223,12 +223,26 @@ public class Main extends Application {
             if (health < 100) {
                 maze[y][x] = GameObject.HALL; // делаем пустую ячейку по указанной позиции
                 images[y][x] = new ImageView(hall);
+                step = 10;
+            }
 
-                    step = 10;
+            layout.add(images[y][x], x, y);
+        }
+
+        if (wasAtCoffe == false) {// делаю не кушать кофе
+            maze[y][x] = GameObject.HALL; // делаем пустую ячейку по указанной позиции
+            images[y][x] = new ImageView(hall);
+        } else {
+            maze[y][x] = GameObject.COFFEE;
+            images[y][x] = new ImageView(coffee);
+            if (step <= 0) {
+                maze[y][x] = GameObject.HALL; // делаем пустую ячейку по указанной позиции
+                images[y][x] = new ImageView(hall);
 
             }
+
+            layout.add(images[y][x], x, y);
         }
-        layout.add(images[y][x], x, y);
     }
 
     public void setSmile(int x, int y) {
@@ -246,6 +260,7 @@ public class Main extends Application {
             if (t.getCode() == KeyCode.RIGHT && maze[smileY][smileX + 1] != GameObject.WALL) {
                 smileX++;
                 energy--;
+                step--;
                 if (energy <= 0) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sorry!");
@@ -259,6 +274,7 @@ public class Main extends Application {
             } else if (t.getCode() == KeyCode.LEFT && smileX > 0 && maze[smileY][smileX - 1] != GameObject.WALL) {
                 smileX--;
                 energy--;
+                step--;
                 if (energy <= 0) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sorry!");
@@ -272,6 +288,7 @@ public class Main extends Application {
             } else if (t.getCode() == KeyCode.UP && smileY > 0 && maze[smileY - 1][smileX] != GameObject.WALL) {
                 smileY--;
                 energy--;
+                step--;
                 if (energy <= 0) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sorry!");
@@ -285,6 +302,7 @@ public class Main extends Application {
             } else if (t.getCode() == KeyCode.DOWN && smileY < height - 1 && maze[smileY + 1][smileX] != GameObject.WALL) {
                 smileY++;
                 energy--;
+                step--;
                 if (energy <= 0) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Sorry!");
@@ -315,7 +333,7 @@ public class Main extends Application {
                 medal++;
             }
             if (maze[smileY][smileX] == GameObject.COFFEE) {
-                if (step == 0) {
+                if (step <= 0) {
                     energy += coffeecost;
                 }
             }

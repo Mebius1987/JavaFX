@@ -78,10 +78,11 @@ public class Main extends Application {
     int smileY = 2; // стартовая позиция игрового персонажика
 
     int exitX = 2;
-    int exitY = 0;
+    int exitY = 0; // конечная позиция
 
     int medal = 0;
-    int totalMedal = 0;
+    int totalMedal = 0; // медали считаем
+
     int enemyDie = 0;
     int totalEnemy = 0;
 

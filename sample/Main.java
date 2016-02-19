@@ -8,6 +8,8 @@ import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;
@@ -16,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 
 public class Main extends Application {
+    MediaPlayer mediaplayer;
 
     public Main() {
         images = new ImageView[height][width];
@@ -31,6 +34,10 @@ public class Main extends Application {
         generateMaze(); // создание лабиринта
         showMaze(); // показ лабиринта
         gameProcess(); // начало игрового процесса (управление стрелками и тд.)
+        Media musicFile = new Media("file:///C:/Java/IDEA/labirint/src/veryu.mp3");
+        mediaplayer = new MediaPlayer(musicFile);
+        mediaplayer.setAutoPlay(true);
+        mediaplayer.setVolume(0.1);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -76,7 +83,7 @@ public class Main extends Application {
     int medal = 0;
     int totalMedal = 0;
     int enemyDie = 0;
-    int totalEnemy=0;
+    int totalEnemy = 0;
 
     int health = 100;
     int coffeecost = 25;
@@ -260,6 +267,7 @@ public class Main extends Application {
 
     public void gameProcess() {
         scene.setOnKeyPressed((KeyEvent t) -> {
+
 
             clearCell(smileX, smileY);
 
